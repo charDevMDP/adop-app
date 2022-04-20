@@ -4,6 +4,7 @@ import { AppNavigation } from './src/navigation/AppNavigation';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from '@expo-google-fonts/comfortaa'
 import { View } from 'react-native';
+import Toast from 'react-native-toast-message'
 
 
 export default function App() {
@@ -21,11 +22,12 @@ export default function App() {
 
 
   return (
-    <View style={{ flex: 1, fontFamily: 'ComfortaaM' }}>
+    <>
       <NavigationContainer>
         <AppNavigation />
       </NavigationContainer>
-    </View>
+      <Toast />
+    </>
   );
 }
 
