@@ -16,7 +16,8 @@ export const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#ff8e00',
-        borderRadius: 10
+        borderRadius: 10,
+        marginTop: 15
     },
     textInput: {
         fontFamily: 'ComfortaaM',

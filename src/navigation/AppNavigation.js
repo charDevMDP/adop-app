@@ -5,10 +5,10 @@ import { Icon } from "@rneui/base";
 import { screen } from '../utils'
 
 // Stacks
-import { PetsStack } from "./PetsStack";
 import { FavoritesStack } from "./FavoritesStack";
 import { SearchStack } from "./SearchStack";
 import { AccountStack } from "./AccountStack";
+import { PostsStack } from './PostsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +27,7 @@ export function AppNavigation() {
         >
             <Tab.Screen
                 name={screen.pets.tab}
-                component={PetsStack}
+                component={PostsStack}
                 options={{ title: "Mascotas" }}
             />
             <Tab.Screen

@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     text: {
         color: "#ff8a00",
         textTransform: "uppercase",
-        marginTop: 10
+        marginTop: 10,
+        fontFamily: 'ComfortaaB'
     }
 })

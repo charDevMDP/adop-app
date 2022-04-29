@@ -5,7 +5,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@expo-google-fonts/comfortaa'
 import { View } from 'react-native';
 import Toast from 'react-native-toast-message'
-
+import 'react-native-get-random-values'
 
 export default function App() {
 

@@ -23,10 +23,30 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "LOCATION",
+        "NOTIFICATIONS",
+        "CAMERA",
+        "CAMERA_ROLL"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photoPermission": "Adop necesita acceso a tu fotos para poder cambiar tu perfil",
+          "savePhotosPermission": "Adop nencesita acceso para guardar fotos",
+          "isAccessMediaLocationEnabled": "true"
+        }
+      ]
+    ]
   }
 }

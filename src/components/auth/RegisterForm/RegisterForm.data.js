@@ -29,5 +29,8 @@ export function validationSchema() {
             .min(6, 'Debe tener al menos 6 caracteres')
             .trim()
             .oneOf([Yup.ref('password')], 'Las contraseñas tienen que ser iguales'),
+        acceptTerms: Yup.boolean()
+            .required('Debes aceptar los terminos y condiciones')
+            .oneOf([true], 'Debes aceptar los terminos y condiciones')
     });
 }

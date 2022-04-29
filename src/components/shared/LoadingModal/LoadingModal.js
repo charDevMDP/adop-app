@@ -2,9 +2,11 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { Overlay, Text } from '@rneui/themed';
 import { styles } from './LoadingModal.styles'
+//import { Text } from '@rneui/base';
+
 //import Text from "../utils/Text"
 
-export function Loading(props) {
+export function LoadingModal(props) {
     const { isVisible, text } = props
 
     return (
@@ -17,6 +19,6 @@ export function Loading(props) {
     )
 }
 
-Loading.defaultProps = {
+LoadingModal.defaultProps = {
     isVisible: false
 }

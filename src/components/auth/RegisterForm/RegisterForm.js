@@ -6,16 +6,39 @@ import * as Linking from 'expo-linking';
 import { useFormik } from 'formik'
 import { initialValues, validationSchema } from './RegisterForm.data'
 import { Button } from "@rneui/base";
+import { screen } from '../../../utils'
+import { useNavigation } from "@react-navigation/native";
+import Toast from 'react-native-toast-message'
 
+// firebase
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
 export function RegisterForm() {
 
+    const nav = useNavigation()
 
     const formik = useFormik({
         initialValues: initialValues(),
         validationSchema: validationSchema(),
         validateOnChange: false,
-        onSubmit: (formValue) => console.log('form', formValue)
+        onSubmit: async (formValue) => {
+            try {
+                const auth = getAuth()
+                await createUserWithEmailAndPassword(auth, formValue.email, formValue.password);
+                nav.navigate(screen.account.account);
+            } catch (error) {
+                let msg = ''
+                if (error == 'Firebase: Error (auth/email-already-in-use') {
+                    msg = 'El email ya esta en un uso'
+                }
+                Toast.show({
+                    type: 'error',
+                    position: 'bottom',
+                    text1: 'Error al intentar registrarse',
+                    text2: msg
+                })
+            }
+        }
     });
 
     const [hidePassword, setHidePassword] = useState(true)
@@ -31,8 +54,7 @@ export function RegisterForm() {
 
 
     return (
-        <View style={styles.content}>
-
+        <View>
             <Input
                 placeholder="Ingresa nombre usuario "
                 containerStyle={styles.inputForm}
@@ -107,25 +129,26 @@ export function RegisterForm() {
 
             <CheckBox
                 //title='Acepto los terminos y condiciones de uso'
-                title={<Text style={{ fontFamily: 'ComfortaaL', fontSize: 10 }}>Acepto los terminos y condiciones de uso</Text>}
-                checked={accept}
+                title={<Text style={{ fontFamily: 'ComfortaaL', fontSize: 12, marginBottom: 5 }}>Acepto los terminos y condiciones de uso</Text>}
+                checked={formik.values.acceptTerms}
                 checkedColor='#ff8e00'
-                containerStyle={{ marginBottom: 10, marginTop: 10, marginHorizontal: 15, backgroundColor: 'none' }}
-                onPress={() => setAccept(!accept)}
+                containerStyle={{ marginTop: 5, marginHorizontal: 15, backgroundColor: 'none', flex: 1, alignItems: 'center' }}
+                onPress={() => formik.setFieldValue('acceptTerms', !formik.values.acceptTerms)}
 
             />
 
-            <View style={{ alignItems: "center" }}>
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
                 <TouchableOpacity onPress={openWeb}>
-                    <Text style={{ color: '#ff8e00', fontFamily: 'ComfortaaM' }}>Ver terminos y condiciones</Text>
+                    <Text style={{ color: '#ff8e00', fontFamily: 'ComfortaaM', fontSize: 12 }}>Ver terminos y condiciones</Text>
                 </TouchableOpacity>
             </View>
 
             <Button
                 title='Registrarse'
                 onPress={formik.handleSubmit}
-                buttonStyle={styles.btn}
+                buttonStyle={[styles.btn, formik.isSubmitting && { backgroundColor: '#ccc' }]}
                 titleStyle={{ fontFamily: 'ComfortaaM' }}
+                loading={formik.isSubmitting}
             />
 
         </View>

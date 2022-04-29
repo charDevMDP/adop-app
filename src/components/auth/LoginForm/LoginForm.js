@@ -4,10 +4,13 @@ import { Input, Icon, Button, Text, Divider } from "@rneui/base"
 import { styles } from './LoginForm.styles'
 import { useFormik } from 'formik'
 import { initialValues, validationSchema } from './LoginForm.data'
+import Toast from 'react-native-toast-message'
 
 
 //nuevas
 import { useNavigation } from '@react-navigation/native'
+import { screen } from "../../../utils";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export function LoginForm() {
 
@@ -22,7 +25,28 @@ export function LoginForm() {
         initialValues: initialValues(),
         validationSchema: validationSchema(),
         validateOnChange: false,
-        onSubmit: (formValue) => console.log('form login', formValue)
+        onSubmit: async (formValue) => {
+            try {
+                const auth = getAuth()
+                await signInWithEmailAndPassword(auth, formValue.email, formValue.password);
+                nav.navigate(screen.account.account)
+            } catch (error) {
+                console.log(error)
+                let msg = 'Error desconocido';
+                if (error === 'Firebase: Error (auth/user-not-found)') {
+                    msg = 'El email no esta registrado'
+                }
+                if (error === 'Firebase: Error (auth/wrong-password)' || error === 'Firebase: Error (auth/invalid-email)') {
+                    msg = 'Los datos ingresados son incorrectos'
+                }
+                Toast.show({
+                    type: 'error',
+                    position: 'bottom',
+                    text1: 'Error al intentar iniciar sesion',
+                    text2: `${msg}`
+                })
+            }
+        }
     });
 
 
@@ -58,7 +82,7 @@ export function LoginForm() {
 
 
     return (
-        <View style={styles.formContainer}>
+        <View>
             <Input
                 placeholder="Ingresa tu correo "
                 containerStyle={styles.inputForm}
@@ -119,7 +143,7 @@ export function LoginForm() {
                 <Text style={{ fontFamily: 'ComfortaaM', fontSize: 14 }}>
                     ¿Aun no tenés cuenta?{" "}
                 </Text>
-                <TouchableOpacity onPress={() => navigation.navigate()}>
+                <TouchableOpacity onPress={() => navigation.navigate(screen.account.register)}>
                     <Text style={{ fontFamily: 'ComfortaaB', fontSize: 14, color: '#ff8e00' }}>Registrate</Text>
                 </TouchableOpacity>
             </View>

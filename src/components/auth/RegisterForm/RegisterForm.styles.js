@@ -1,12 +1,6 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 30
-    },
     inputForm: {
         width: "100%",
     },
@@ -16,7 +10,8 @@ export const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#ff8e00',
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 20
     },
     textInput: {
         fontFamily: 'ComfortaaM',
