@@ -13,6 +13,7 @@ export function initialValues() {
         care3: false,
         description: '',
         location: null,
+        useCreate: '',
         images: []
     }
 }

@@ -1,7 +1,9 @@
+
 const petsStack = {
     tab: 'PetsTab',
     pets: 'Mascotas',
-    addPost: 'AgregarPost'
+    addPost: 'AgregarPost',
+    pet: 'Mascota'
 }
 
 const favoritesStack = {

@@ -7,4 +7,8 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         marginHorizontal: 20
     },
+    viewOption: {
+        marginHorizontal: 10,
+        marginTop: 10,
+    }
 })

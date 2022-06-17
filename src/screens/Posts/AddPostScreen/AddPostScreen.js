@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
-import { InfoForm, UploadImagesForm } from '../../../components/Posts/AddPost'
+import { View, Text, TouchableOpacity } from 'react-native'
+import { InfoForm, UploadImagesForm, AddOptions } from '../../../components/Posts/AddPost'
 import { initialValues, validationSchema } from './AddPostScreen.data';
 import { Button } from '@rneui/base'
 import { v4 as uuid } from 'uuid'
@@ -13,10 +13,9 @@ import { db } from '../../../utils/'
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message'
-import { async } from '@firebase/util';
-import { map } from 'lodash'
-
-import firebase from '../../../utils/firebase'
+import { getAuth } from 'firebase/auth';
+import { Modal } from '../../../components/shared/Modal'
+import { globalStyles } from '../../../utils'
 
 export function AddPostScreen() {
 
@@ -26,7 +25,15 @@ export function AddPostScreen() {
     const [textLoading, setTextLoading] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [urls, setUrls] = useState([])
+    const [user, setUser] = useState(null)
 
+    const [typePost, setTypePost] = useState('')
+
+
+    useEffect(() => {
+        const currentUser = getAuth().currentUser
+        setUser(currentUser);
+    }, [])
 
     useEffect(() => {
         uploadingImgs ? setTextLoading('Subiendo Imagenes') : setTextLoading('Subiendo Post')
@@ -104,6 +111,7 @@ export function AddPostScreen() {
         newData.id = uuid();
         newData.createAt = Date();
         newData.images = [...urls]
+        newData.useCreate = user.email
 
         const mydb = doc(db, 'petsNews', newData.id);
         await setDoc(mydb, newData);
@@ -114,9 +122,43 @@ export function AddPostScreen() {
         nav.goBack();
     }
 
+    const typePostHeader = (typepost) => {
+
+
+        switch (typepost) {
+            case 'adop':
+                return (
+                    <TouchableOpacity underlayColor={'transparent'} style={[styles.viewOption, globalStyles.btnAdop]}>
+                        <Text style={{ textAlign: 'center', fontFamily: 'ComfortaaB', fontSize: 12, color: '#427865' }}>QUIERO DAR EN ADOPCIÓN</Text>
+                    </TouchableOpacity>
+                )
+                break;
+            case 'trans':
+                return (
+                    <TouchableOpacity underlayColor={'transparent'} style={[styles.viewOption, globalStyles.btnTrans]}>
+                        <Text style={{ textAlign: 'center', fontFamily: 'ComfortaaB', fontSize: 12, color: '#374491' }}>ESTOY BUSCANDO TRÁNSITO</Text>
+                    </TouchableOpacity>
+                )
+                break;
+            case 'lost':
+                return (
+                    <TouchableOpacity underlayColor={'transparent'} style={[styles.viewOption, globalStyles.btnLost]}>
+                        <Text style={{ textAlign: 'center', fontFamily: 'ComfortaaB', fontSize: 12, color: '#6b46a5' }}>SE ME PERDIÓ MI MASCOTA</Text>
+                    </TouchableOpacity>
+
+                )
+                break;
+        }
+    }
+
 
     return (
         <KeyboardAwareScrollView>
+
+            <View>{typePostHeader('lost')}</View>
+            <Modal>
+                <AddOptions setTypePost={setTypePost} />
+            </Modal>
 
             <UploadImagesForm formik={formik} />
 
